@@ -15,3 +15,5 @@ def hash_password(password: str):
     return pwd_context.hash(password)
  
 
+def verify_password(input_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(input_password, hashed_password)
