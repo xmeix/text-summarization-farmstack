@@ -4,3 +4,4 @@ from ..config.database import users_collection
 from bson import ObjectId 
 
 router = APIRouter()
+

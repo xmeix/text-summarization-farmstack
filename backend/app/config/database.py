@@ -16,7 +16,6 @@ users_collection = db["users"]
 
 # Send a ping to confirm a successful connection
 try:
-    print('HELLO')
     client.admin.command('ping')
     print("Pinged your deployment. You have successfully connected to MongoDB!")
 except Exception as e:
