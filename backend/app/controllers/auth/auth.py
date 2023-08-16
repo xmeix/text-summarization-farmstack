@@ -14,4 +14,10 @@ async def authenticate_user(email: str, password: str):
         raise HTTPException(status_code=400, detail="Invalid email or password provided")
     return generateJWT(str(user['_id']), email)
 
-
+async def user_exists(email: str):
+    user = await users_collection.find_one({"email": email})
+    print(user)
+    if not user:
+        return False
+    return True
+ 

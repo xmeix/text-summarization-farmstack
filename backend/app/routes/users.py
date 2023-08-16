@@ -4,20 +4,25 @@ from ..config.database import users_collection
 from bson import ObjectId 
 from ..utils.utils import parse_json, hash_password
 from ..controllers.auth.jwt_handler import generateJWT
-from ..controllers.auth.auth import authenticate_user
+from ..controllers.auth.auth import authenticate_user, user_exists
+
 
 router = APIRouter()
 
 
 
 #registers the user using his credentials
-@router.post('auth/register/',tags=['auth'])
+@router.post('/auth/register/',tags=['auth'])
 async def register_user(response: Response,user: User):   
     email = parse_json(user.email)
     password = parse_json(user.password)  # Parse the password too
 
     if not email or not password:
         raise HTTPException(status_code=400, detail="Invalid email or password provided")
+    
+    user_does_exist = await user_exists(email)
+    if user_does_exist:
+        raise HTTPException(status_code=400, detail="User already exists")
     
     hashed_password = hash_password(password)  # Hash the password
 
