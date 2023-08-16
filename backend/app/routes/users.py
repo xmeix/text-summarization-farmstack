@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Body
+from fastapi import APIRouter, HTTPException, status, Body,Response
 from ..models.users import User,UserLogin
 from ..config.database import users_collection 
 from bson import ObjectId 
@@ -12,7 +12,7 @@ router = APIRouter()
 
 #registers the user using his credentials
 @router.post('/user/',tags=['user'])
-async def register_user(user: User):   
+async def register_user(response: Response,user: User):   
     email = parse_json(user.email)
     password = parse_json(user.password)  # Parse the password too
 
@@ -28,7 +28,9 @@ async def register_user(user: User):
         inserted_user = await users_collection.insert_one(user_dict)
         if inserted_user.inserted_id:
             print(email)
-            return generateJWT(str(inserted_user.inserted_id), email)
+            token =  generateJWT(str(inserted_user.inserted_id), email)
+            response.set_cookie("access_token", token["access_token"], httponly=True,secure=True)
+            return token
         else:
             raise HTTPException(status_code=400, detail="Registration Failed")
     except Exception as e:
@@ -36,7 +38,7 @@ async def register_user(user: User):
 
 
 @router.post('/user/login/', tags=['user'])
-async def user_login(login_data: UserLogin):
+async def user_login(response: Response,login_data: UserLogin):
     email = parse_json(login_data.email)
     password = parse_json(login_data.password)
 
@@ -45,6 +47,10 @@ async def user_login(login_data: UserLogin):
  
     token = await authenticate_user(email, password)
     if token:
+        print(token)
+        response.set_cookie("access_token", token["access_token"], httponly=True,secure=False)
         return token
     else:
         raise HTTPException(status_code=401, detail="Login failed")
+
+

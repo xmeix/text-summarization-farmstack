@@ -12,7 +12,7 @@ JWT_ALGORITHM = config("ALGORITHM")
 
 # function returns the generated tokens response(jwts)
 def token_response(token: str):
-    return {"access token": token}
+    return {"access_token": token, "token_type": "Bearer"}
 
 # function generate token using id and email
 def generateJWT(userID: str, email: EmailStr):
