@@ -11,7 +11,7 @@ router = APIRouter()
 
 
 #registers the user using his credentials
-@router.post('/user/',tags=['user'])
+@router.post('auth/register/',tags=['auth'])
 async def register_user(response: Response,user: User):   
     email = parse_json(user.email)
     password = parse_json(user.password)  # Parse the password too
@@ -27,7 +27,6 @@ async def register_user(response: Response,user: User):
     try:
         inserted_user = await users_collection.insert_one(user_dict)
         if inserted_user.inserted_id:
-            print(email)
             token =  generateJWT(str(inserted_user.inserted_id), email)
             response.set_cookie("access_token", token["access_token"], httponly=True,secure=True)
             return token
@@ -37,7 +36,7 @@ async def register_user(response: Response,user: User):
         raise HTTPException(status_code=500, detail="Internal Server Error")
 
 
-@router.post('/user/login/', tags=['user'])
+@router.post('/auth/login/', tags=['auth'])
 async def user_login(response: Response,login_data: UserLogin):
     email = parse_json(login_data.email)
     password = parse_json(login_data.password)
@@ -47,10 +46,14 @@ async def user_login(response: Response,login_data: UserLogin):
  
     token = await authenticate_user(email, password)
     if token:
-        print(token)
         response.set_cookie("access_token", token["access_token"], httponly=True,secure=False)
         return token
     else:
         raise HTTPException(status_code=401, detail="Login failed")
 
 
+
+@router.post('/auth/logout/', tags=['auth'])
+async def user_logout(response: Response):
+    response.delete_cookie("access_token")  # Clear the access token cookie
+    return {"message": "Logout successful"}
