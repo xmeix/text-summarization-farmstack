@@ -13,7 +13,7 @@ router = APIRouter()
 
 #registers the user using his credentials
 @router.post('/auth/register/',tags=['auth'])
-async def register_user(response: Response,user: User):   
+async def user_register(response: Response,user: User):   
     email = parse_json(user.email)
     password = parse_json(user.password)  # Parse the password too
 

@@ -1,10 +1,12 @@
 from fastapi import FastAPI
-from app.routes import users
+from app.routes import users,chats
 from fastapi.middleware.cors import CORSMiddleware
 
 
 app = FastAPI()
+
 app.include_router(users.router)
+app.include_router(chats.router)
 
 
 origins = [

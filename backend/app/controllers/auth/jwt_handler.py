@@ -3,7 +3,7 @@ import time
 import jwt
 from decouple import config
 from pydantic import EmailStr
-
+from fastapi import HTTPException
 
 
 JWT_SECRET = config("JWT_SECRET")
@@ -28,6 +28,10 @@ def generateJWT(userID: str, email: EmailStr):
 def decodeJWT(token: str):
     try:
         decode_token = jwt.decode(token, JWT_SECRET, algorithms=JWT_ALGORITHM)
-        return decode_token if decode_token("expires") >= time.time() else None
-    except:
-        return {}
+        # return decode_token if decode_token("expires") >= time.time() else None
+        return decode_token
+    except jwt.exceptions.DecodeError:
+        raise HTTPException(status_code=401,detail="Invalid token")
+    except jwt.exceptions.ExpiredSignatureError:
+        raise HTTPException(status_code=401,detail="Token has expired")
+
