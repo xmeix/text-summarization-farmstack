@@ -12,6 +12,7 @@ client = motor.motor_asyncio.AsyncIOMotorClient("mongodb+srv://xmeix:xmeix911@cl
 db = client.gptlike_database
 
 users_collection = db["users"]
+chats_collection = db["chats"]
 
 
 # Send a ping to confirm a successful connection

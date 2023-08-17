@@ -3,8 +3,9 @@ from typing import List
 
 
 class TextSummary(BaseModel):
-    text: str
+    text: str 
     summary: str
 
 class Chat(BaseModel):
-    texts_summaries: List[TextSummary]
+    title: str
+    texts_summaries: List[TextSummary] = (Field(default=None),)
