@@ -73,3 +73,19 @@ async def create_chat(response: Response,title: str,credentials: str = Depends(j
     raise HTTPException(status_code=403, detail="Unauthorized")
 
 
+
+#delete one chat by id
+@router.delete('/chats/{id}', dependencies=[Depends(jwtBearer())], tags=['chats'])
+async def delete_one_chat(response: Response,id: str,credentials: str = Depends(jwtBearer())):
+    # we first verify the token
+    if jwtBearer().verify_jwt(jwtoken=credentials):
+        chat_object_id = ObjectId(id)
+        chat = await chats_collection.find_one_and_delete({"_id": chat_object_id})
+        
+        if chat:
+            chat["_id"] = str(chat["_id"])
+            return {"message": "chat has been deleted successfully"}
+        else:
+            raise HTTPException(status_code=404, detail="Chat not found")
+
+    raise HTTPException(status_code=403, detail="Unauthorized")
