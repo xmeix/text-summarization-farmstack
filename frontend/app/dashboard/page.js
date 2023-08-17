@@ -1,5 +1,5 @@
 import Link from "next/link";
-
+// here we send a request to get all chats by sending the users id
 const Dashboard = () => {
   return (
     <div className="dashboard">

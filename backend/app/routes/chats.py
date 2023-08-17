@@ -23,12 +23,18 @@ async def get_one_chat(response: Response,id: str,credentials: str = Depends(jwt
     raise HTTPException(status_code=403, detail="Unauthorized")
 
 
-#get all the chats that exist
+#get all the chats that has the users id
 @router.get('/chats/', dependencies=[Depends(jwtBearer())], tags=['chats'])
 async def get_all_chats(response: Response,credentials: str = Depends(jwtBearer())):
     # we first verify the token
     if jwtBearer().verify_jwt(jwtoken=credentials):
-        all_chats = await chats_collection.find({}).to_list(length=None)
+        # we have to get the user id as a reference 
+        payload = decodeJWT(credentials)  # Decode the JWT payload
+        # print(payload)
+        if payload and "userID" in payload:
+            user_id = payload["userID"]  # Extract userId from the JWT payload
+
+        all_chats = await chats_collection.find({"userId":user_id}).to_list(length=None)
         # Convert ObjectId to string
         for chat in all_chats:
             chat["_id"] = str(chat["_id"])
