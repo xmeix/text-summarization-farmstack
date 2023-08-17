@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Body,Response,Depends
 from ..config.database import users_collection,chats_collection
 from bson import ObjectId
 from app.controllers.auth.jwt_bearer import jwtBearer
+from app.controllers.auth.jwt_handler import decodeJWT
 from app.models.chats import Chat, TextSummary
 from app.controllers.chats.chats import get_summaried_text
 router = APIRouter()
@@ -59,8 +60,16 @@ async def post_in_chat(response: Response,id: str,data: str = Body(...),credenti
 async def create_chat(response: Response,title: str,credentials: str = Depends(jwtBearer())):
     # we first verify the token
     if jwtBearer().verify_jwt(jwtoken=credentials):
-        result = await chats_collection.insert_one({"title": title})
+        # we have to get the user id as a reference 
+        payload = decodeJWT(credentials)  # Decode the JWT payload
+        # print(payload)
+        if payload and "userID" in payload:
+            user_id = payload["userID"]  # Extract userId from the JWT payload
+
+        result = await chats_collection.insert_one({"title": title, "userId": user_id})
         # Convert the ObjectId to string
         inserted_id = str(result.inserted_id)
         return {"inserted_id": inserted_id}
     raise HTTPException(status_code=403, detail="Unauthorized")
+
+
