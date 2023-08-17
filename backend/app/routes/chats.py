@@ -3,7 +3,7 @@ from ..config.database import users_collection,chats_collection
 from bson import ObjectId
 from app.controllers.auth.jwt_bearer import jwtBearer
 from app.models.chats import Chat, TextSummary
-
+from app.controllers.chats.chats import get_summaried_text
 router = APIRouter()
 
 #get one chat by id
@@ -37,16 +37,16 @@ async def get_all_chats(response: Response,credentials: str = Depends(jwtBearer(
 
 #post a text and its summary in a specific chat
 @router.post('/chats/{id}', dependencies=[Depends(jwtBearer())], tags=['chats'])
-async def post_in_chat(response: Response,id: str,text_summary: TextSummary = Body(...),credentials: str = Depends(jwtBearer())):
+async def post_in_chat(response: Response,id: str,data: str = Body(...),credentials: str = Depends(jwtBearer())):
     # we first verify the token
     if jwtBearer().verify_jwt(jwtoken=credentials):
+        text_summary = await get_summaried_text(data)
         chat_object_id = ObjectId(id)
         # Update the chat in MongoDB by adding the new text summary
         result = await chats_collection.update_one(
             {"_id": chat_object_id},
             {"$push": {"texts_summaries": text_summary.dict()}}
         )
-
         if result.modified_count > 0:
             return {"message": "Text summary added successfully"}
         else:
@@ -64,25 +64,3 @@ async def create_chat(response: Response,title: str,credentials: str = Depends(j
         inserted_id = str(result.inserted_id)
         return {"inserted_id": inserted_id}
     raise HTTPException(status_code=403, detail="Unauthorized")
-
-
-
-
-
-# # GET Posts
-# @app.get("/posts", tags=["posts"])
-# def getPosts():
-#     return {"data": posts}
-
-
-# # Get single post {id}
-# @app.get("/posts/{id}", tags=["posts"])
-# def getPost(id: int):
-#     if id > len(posts):
-#         return {
-#             "error": 'post with ID: "{id}" does not exist',
-#         }
-
-#     for post in posts:
-#         if post["id"] == id:
-#             return {"data": post}
