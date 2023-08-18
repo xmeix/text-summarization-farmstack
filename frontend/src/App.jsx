@@ -34,7 +34,7 @@ function App() {
         <NavLink to={"/dashboard/8"} className="link">
           chat
         </NavLink> */}
-        <button onClick={handleLogout}>logout</button>
+        {isLoggedIn && <button onClick={handleLogout}>logout</button>}
       </nav>
       {!isLoggedIn && (
         <Routes>

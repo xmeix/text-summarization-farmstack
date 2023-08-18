@@ -1,0 +1,12 @@
+.error {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 0.5em;
+  text-align: center;
+
+  border: solid 1px #ff0000;
+  color: var(--white);
+  background-color: #ff0000;
+}

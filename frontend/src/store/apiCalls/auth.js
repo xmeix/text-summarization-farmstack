@@ -9,7 +9,7 @@ export const login = createAsyncThunk("auth/login", async (body, thunkAPI) => {
 
     return res.data;
   } catch (error) {
-    return rejectWithValue(error.message);
+    return rejectWithValue(error.response.data.detail);
   }
 });
 export const register = createAsyncThunk(
@@ -21,7 +21,8 @@ export const register = createAsyncThunk(
 
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.log(error);
+      return rejectWithValue(error.response.data.detail);
     }
   }
 );
@@ -33,6 +34,6 @@ export const logout = createAsyncThunk("/auth/logout", async (_, thunkAPI) => {
 
     return res.data;
   } catch (error) {
-    return rejectWithValue(error.message);
+    return rejectWithValue(error.response.data.detail);
   }
 });

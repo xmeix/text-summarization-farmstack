@@ -1,27 +1,58 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Register.css";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Input from "../login/input/Input";
 import { register } from "../../store/apiCalls/auth";
+import Error from "../../components/Error/Error";
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isLoading, error, user } = useSelector((state) => state.auth);
-  const nameRef = useRef("");
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
+  const nameRef = useRef(null);
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const name = nameRef.current.value;
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    dispatch(register({ name, email, password }));
-    if (error === null) {
-      navigate("/login");
+    setErrorMessage("");
+    if (name === "" || email === "" || password === "")
+      setErrorMessage("Empty fields!");
+    else {
+      await dispatch(register({ name, email, password }));
+      if (error === null) {
+        navigate("/login");
+      } else setErrorMessage(error);
     }
   };
+
+  const inputs = [
+    {
+      label: "Full Name *",
+      name: "name",
+      type: "text",
+      placeholder: "ex: John Doe",
+      inputRef: nameRef,
+    },
+    {
+      label: "Email *",
+      name: "Email",
+      type: "email",
+      placeholder: "ex: john.doe@gmail.com",
+      inputRef: emailRef,
+    },
+    {
+      label: "Password *",
+      name: "password",
+      type: "password",
+      placeholder: "ex: @password123",
+      inputRef: passwordRef,
+    },
+  ];
 
   return (
     <div className="login">
@@ -38,32 +69,23 @@ const Register = () => {
           </div>
         </div>
         <form onSubmit={handleRegister}>
-          <Input
-            label="Full Name"
-            name="name"
-            type="text"
-            placeholder="ex: John Doe"
-            inputRef={nameRef}
-          />
-          <Input
-            label="Email"
-            name="email"
-            type="text"
-            placeholder="ex: john.doe@gmail.com"
-            inputRef={emailRef}
-          />
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="ex: @password123"
-            inputRef={passwordRef}
-          />
+          {inputs.map((el, i) => (
+            <Input
+              key={i}
+              label={el.label}
+              name={el.name}
+              type={el.type}
+              placeholder={el.placeholder}
+              inputRef={el.inputRef}
+            />
+          ))}
+
           <button type="submit" className="form-btn" disabled={isLoading}>
             Register
           </button>
         </form>
       </div>
+      {errorMessage !== "" && <Error error={errorMessage} />}
     </div>
   );
 };

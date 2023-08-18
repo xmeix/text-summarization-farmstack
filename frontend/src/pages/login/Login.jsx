@@ -1,24 +1,47 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/apiCalls/auth";
 import { getJwtTokenFromCookie, token } from "../../store/apiCalls/apiService";
 import { NavLink } from "react-router-dom";
 import Input from "./input/Input";
+import Error from "../../components/Error/Error";
 
 const Login = () => {
   const dispatch = useDispatch();
 
   const { isLoading, error, user } = useSelector((state) => state.auth);
-  const emailRef = useRef("");
-  const passwordRef = useRef("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const emailRef = useRef(null);
+  const passwordRef = useRef(null);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
-    dispatch(login({ email, password }));
+    setErrorMessage("");
+    if (email === "" || password === "") setErrorMessage("Empty fields!");
+    else {
+      await dispatch(login({ email, password }));
+      if (error) setErrorMessage(error);
+    }
   };
+  const inputs = [
+    {
+      label: "Email *",
+      name: "Email",
+      type: "email",
+      placeholder: "ex: john.doe@gmail.com",
+      inputRef: emailRef,
+    },
+    {
+      label: "Password *",
+      name: "password",
+      type: "password",
+      placeholder: "ex: @password123",
+      inputRef: passwordRef,
+    },
+  ];
 
   return (
     <div className="login">
@@ -35,25 +58,22 @@ const Login = () => {
           </div>
         </div>
         <form onSubmit={handleLogin}>
-          <Input
-            label="Email"
-            name="email"
-            type="text"
-            placeholder="ex: john.doe@gmail.com"
-            inputRef={emailRef}
-          />
-          <Input
-            label="Password"
-            name="password"
-            type="password"
-            placeholder="ex: @password123"
-            inputRef={passwordRef}
-          />
+          {inputs.map((el, i) => (
+            <Input
+              key={i}
+              label={el.label}
+              name={el.name}
+              type={el.type}
+              placeholder={el.placeholder}
+              inputRef={el.inputRef}
+            />
+          ))}
           <button type="submit" className="form-btn" disabled={isLoading}>
             Login
           </button>
         </form>
       </div>
+      {errorMessage !== "" && <Error error={errorMessage} />}
     </div>
   );
 };
