@@ -1,11 +1,11 @@
 import { useRef } from "react";
-import { login } from "../../store/authSlice";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../store/apiCalls/auth";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, token } = useSelector((state) => state.auth);
+  const { isLoading, error, token, user } = useSelector((state) => state.auth);
   const emailRef = useRef("");
   const passwordRef = useRef("");
 
@@ -13,6 +13,7 @@ const Login = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     dispatch(login({ email, password }));
+    console.log(user);
   };
 
   return (
@@ -22,8 +23,14 @@ const Login = () => {
       <input type="password" ref={passwordRef} />
       <button onClick={handleLogin}>Login</button>
       {isLoading && <div>Loading...</div>}
-      {error && <div>ERROR!</div>}
-      {!error && <div>{token}</div>}
+      {error ? (
+        <div>ERROR! {error}</div>
+      ) : (
+        <div>
+          info {user?.userId} {user?.email} {user?.password}
+          {user?.name}
+        </div>
+      )}
     </div>
   );
 };

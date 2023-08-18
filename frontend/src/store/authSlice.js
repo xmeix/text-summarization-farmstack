@@ -1,14 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-export const login = createAsyncThunk("auth/login", async (body, thunkAPI) => {
-  try {
-    const res = await axios.post("http://127.0.0.1:8000/auth/login/", body);
-
-    return res.data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+import { createSlice } from "@reduxjs/toolkit";
+import { login, logout } from "./apiCalls/auth";
 
 const authSlice = createSlice({
   name: "auth",
@@ -17,12 +8,12 @@ const authSlice = createSlice({
     user: null,
     token: null,
     loading: false,
-    error: false,
+    error: null,
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state, action) => {
       state.loading = true;
-      state.error = false;
+      state.error = null;
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.loading = false;
@@ -30,8 +21,27 @@ const authSlice = createSlice({
       state.user = action.payload.user;
     });
     builder.addCase(login.rejected, (state, action) => {
-      state.error = true;
+      state.error = action.payload;
       state.loading = false;
+      state.isLoggedIn = false;
+      state.user = null;
+      state.token = null;
+    });
+    builder.addCase(logout.pending, (state, action) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(logout.fulfilled, (state, action) => {
+      state.loading = false;
+      state.isLoggedIn = false;
+      state.user = null;
+    });
+    builder.addCase(logout.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+      state.isLoggedIn = false;
+      state.user = null;
+      state.token = null;
     });
   },
 });

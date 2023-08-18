@@ -4,8 +4,14 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import Register from "./pages/register/Register";
 import Login from "./pages/login/Login";
 import Chat from "./pages/chat/Chat";
+import { useDispatch } from "react-redux";
+import { logout } from "./store/apiCalls/auth";
 
 function App() {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(logout());
+  };
   return (
     <div>
       <nav>
@@ -24,6 +30,7 @@ function App() {
         <NavLink to={"/dashboard/8"} className="link">
           chat
         </NavLink>
+        <button onClick={handleLogout}>logout</button>
       </nav>
       <Routes>
         <Route path={"/dashboard"} element={<Dashboard />} />
