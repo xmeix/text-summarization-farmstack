@@ -28,8 +28,10 @@ export const register = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("/auth/logout", async (_, thunkAPI) => {
-  const { rejectWithValue } = thunkAPI;
+  const { rejectWithValue, getState } = thunkAPI;
   try {
+    const stateBefore = getState();
+    stateBefore.chat.chats = [];
     const res = await apiService.public.post("/auth/logout/");
 
     return res.data;

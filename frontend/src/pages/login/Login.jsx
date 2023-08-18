@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/apiCalls/auth";
@@ -6,6 +6,7 @@ import { getJwtTokenFromCookie, token } from "../../store/apiCalls/apiService";
 import { NavLink } from "react-router-dom";
 import Input from "./input/Input";
 import Error from "../../components/Error/Error";
+import { getChats } from "../../store/apiCalls/chat";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,15 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
-
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error);
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   const handleLogin = async (e) => {
     e.preventDefault();
     const email = emailRef.current.value;
@@ -23,7 +32,7 @@ const Login = () => {
     if (email === "" || password === "") setErrorMessage("Empty fields!");
     else {
       await dispatch(login({ email, password }));
-      if (error) setErrorMessage(error);
+      dispatch(getChats());
     }
   };
   const inputs = [

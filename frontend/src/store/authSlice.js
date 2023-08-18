@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, logout, register } from "./apiCalls/auth";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { getChats } from "./apiCalls/chat";
 
 const authSlice = createSlice({
   name: "auth",

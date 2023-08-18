@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Register.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import Input from "../login/input/Input";
 import { register } from "../../store/apiCalls/auth";
@@ -13,7 +13,15 @@ const Register = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
-
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(error);
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
   const handleRegister = async (e) => {
     e.preventDefault();
     const name = nameRef.current.value;
@@ -26,7 +34,7 @@ const Register = () => {
       await dispatch(register({ name, email, password }));
       if (error === null) {
         navigate("/login");
-      } else setErrorMessage(error);
+      }
     }
   };
 

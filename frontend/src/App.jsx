@@ -6,6 +6,8 @@ import Login from "./pages/login/Login";
 import Chat from "./pages/chat/Chat";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./store/apiCalls/auth";
+import { useEffect } from "react";
+import { getChats } from "./store/apiCalls/chat";
 
 function App() {
   const dispatch = useDispatch();
@@ -16,6 +18,7 @@ function App() {
   const handleLogout = () => {
     dispatch(logout());
   };
+
   return (
     <div>
       <nav>

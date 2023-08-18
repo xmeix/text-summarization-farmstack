@@ -8,7 +8,7 @@ export const getChats = createAsyncThunk(
     const { rejectWithValue } = thunkAPI;
     try {
       const res = await apiService.user.get(`/chats/`);
-
+      console.log(res.data);
       return res.data;
     } catch (error) {
       return rejectWithValue(error.message);
