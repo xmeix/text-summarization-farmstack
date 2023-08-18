@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, logout } from "./apiCalls/auth";
+import Cookies from "js-cookie";
 
 const authSlice = createSlice({
   name: "auth",
@@ -19,6 +20,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.isLoggedIn = true;
       state.user = action.payload.user;
+      Cookies.set("access_token", action.payload.token);
     });
     builder.addCase(login.rejected, (state, action) => {
       state.error = action.payload;
@@ -35,6 +37,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.isLoggedIn = false;
       state.user = null;
+      Cookies.remove("access_token");
     });
     builder.addCase(logout.rejected, (state, action) => {
       state.error = action.payload;

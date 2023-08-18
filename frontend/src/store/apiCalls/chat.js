@@ -1,12 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { apiService } from "./apiService";
 
 export const getChats = createAsyncThunk(
   "chat/getChats",
   async (_, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/chats/`);
+      const res = await apiService.user.get(`/chats/`);
 
       return res.data;
     } catch (error) {
@@ -19,7 +20,7 @@ export const getChat = createAsyncThunk(
   async (id, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await axios.get(`http://127.0.0.1:8000/chats/${id}/`);
+      const res = await apiService.user.get(`/chats/${id}/`);
 
       return res.data;
     } catch (error) {
@@ -32,7 +33,7 @@ export const addChat = createAsyncThunk(
   async (title, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await axios.post(`http://127.0.0.1:8000/chats/${title}/`);
+      const res = await apiService.user.post(`/chats/${title}/`);
 
       return res.data;
     } catch (error) {
@@ -45,10 +46,7 @@ export const addInChat = createAsyncThunk(
   async (data, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await axios.post(
-        `http://127.0.0.1:8000/chats/${data.id}/`,
-        data.body
-      );
+      const res = await apiService.user.put(`/chats/${data.id}/`, data.body);
 
       return res.data;
     } catch (error) {
@@ -62,7 +60,7 @@ export const deleteChat = createAsyncThunk(
   async (id, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await axios.delete(`http://127.0.0.1:8000/chats/${id}/`);
+      const res = await apiService.user.delete(`/chats/${id}/`);
 
       return id;
     } catch (error) {

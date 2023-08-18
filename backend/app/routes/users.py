@@ -51,8 +51,8 @@ async def user_login(response: Response,login_data: UserLogin):
  
     token, user = await authenticate_user(email, password)
     if token:
-        # response.set_cookie("access_token", token["access_token"], httponly=True,secure=None,samesite="strict")
-        # response.set_cookie("user_info",str({"userId": str(user['_id']),"email": user['email'],"name":user['name']}), httponly=True,samesite="strict")
+        # response.set_cookie("access_token", token["access_token"], httponly=True,secure=None)
+        # response.set_cookie("user_info",str({"userId": str(user['_id']),"email": user['email'],"name":user['name']}), httponly=True)
         return {"token": token['access_token'],"user": {"userId": str(user['_id']),"email": user['email'],"name":user['name']}}
     else:
         raise HTTPException(status_code=401, detail="Login failed")

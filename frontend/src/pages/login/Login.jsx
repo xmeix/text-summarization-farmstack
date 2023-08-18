@@ -2,26 +2,29 @@ import { useRef } from "react";
 import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/apiCalls/auth";
+import { getJwtTokenFromCookie, token } from "../../store/apiCalls/apiService";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { isLoading, error, token, user } = useSelector((state) => state.auth);
+  const { isLoading, error, user } = useSelector((state) => state.auth);
   const emailRef = useRef("");
   const passwordRef = useRef("");
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    e.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     dispatch(login({ email, password }));
-    console.log(user);
   };
 
   return (
     <div className="login">
       <h1>Login</h1>
-      <input type="text" ref={emailRef} />
-      <input type="password" ref={passwordRef} />
-      <button onClick={handleLogin}>Login</button>
+      <form onSubmit={handleLogin}>
+        <input type="text" ref={emailRef} />
+        <input type="password" ref={passwordRef} />
+        <button type="submit">Login</button>
+      </form>
       {isLoading && <div>Loading...</div>}
       {error ? (
         <div>ERROR! {error}</div>
@@ -31,6 +34,7 @@ const Login = () => {
           {user?.name}
         </div>
       )}
+      {/* {getJwtTokenFromCookie() || "no token"} */}
     </div>
   );
 };

@@ -43,7 +43,7 @@ async def get_all_chats(response: Response,credentials: str = Depends(jwtBearer(
     raise HTTPException(status_code=403, detail="Unauthorized")
 
 #post a text and its summary in a specific chat
-@router.post('/chats/{id}', dependencies=[Depends(jwtBearer())], tags=['chats'])
+@router.put('/chats/{id}', dependencies=[Depends(jwtBearer())], tags=['chats'])
 async def post_in_chat(response: Response,id: str,data: str = Body(...),credentials: str = Depends(jwtBearer())):
     # we first verify the token
     if jwtBearer().verify_jwt(jwtoken=credentials):
