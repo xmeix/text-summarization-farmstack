@@ -5,7 +5,7 @@ from bson import ObjectId
 from ..utils.utils import parse_json, hash_password
 from ..controllers.auth.jwt_handler import generateJWT
 from ..controllers.auth.auth import authenticate_user, user_exists
-
+import json
 
 router = APIRouter()
 
@@ -33,7 +33,7 @@ async def user_register(response: Response,user: User):
         inserted_user = await users_collection.insert_one(user_dict)
         if inserted_user.inserted_id:
             token =  generateJWT(str(inserted_user.inserted_id), email)
-            response.set_cookie("access_token", token["access_token"], httponly=True,secure=True)
+            # response.set_cookie("access_token", token["access_token"], httponly=True,secure=True)
             return token
         else:
             raise HTTPException(status_code=400, detail="Registration Failed")
@@ -49,9 +49,10 @@ async def user_login(response: Response,login_data: UserLogin):
     if not email or not password:
         raise HTTPException(status_code=400, detail="Invalid email or password provided")
  
-    token = await authenticate_user(email, password)
+    token, user = await authenticate_user(email, password)
     if token:
-        response.set_cookie("access_token", token["access_token"], httponly=True,secure=False)
+        response.set_cookie("access_token", token["access_token"], httponly=True,secure=None,samesite="strict")
+        response.set_cookie("user_info",str({"userId": str(user['_id']),"email": user['email'],"name":user['name']}), httponly=True,samesite="strict")
         return token
     else:
         raise HTTPException(status_code=401, detail="Login failed")
@@ -61,4 +62,5 @@ async def user_login(response: Response,login_data: UserLogin):
 @router.post('/auth/logout/', tags=['auth'])
 async def user_logout(response: Response):
     response.delete_cookie("access_token")  # Clear the access token cookie
+    response.delete_cookie("user_info")  # Clear the access token cookie
     return {"message": "Logout successful"}
