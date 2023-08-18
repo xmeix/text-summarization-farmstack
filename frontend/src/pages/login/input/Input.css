@@ -1,0 +1,43 @@
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group input {
+  border-radius: 5px;
+  border: 1px solid var(--light-gray);
+  outline: none;
+  padding: 0.7em;
+  font-family: var(--font);
+  min-width: 250px;
+  font-weight: 500;
+}
+.input-group input::placeholder {
+  outline: none;
+  color: var(--gray);
+}
+.input-group input:hover,
+.input-group input:focus {
+  border: 1px solid var(--gray);
+}
+.input-group label {
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 500;
+
+  text-transform: capitalize;
+  padding-left: 0.5em;
+  margin-bottom: 0.3em;
+}
+
+.input-group .forget-pass {
+  font-size: 12px;
+  font-weight: 400;
+  padding: 0.5em 1em;
+  align-self: flex-end;
+  transition: all 0.5s ease-in-out;
+  cursor: pointer;
+}
+.input-group .forget-pass:hover {
+  text-decoration: underline;
+}

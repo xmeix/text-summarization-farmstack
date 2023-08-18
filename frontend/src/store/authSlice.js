@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { login, logout } from "./apiCalls/auth";
+import { login, logout, register } from "./apiCalls/auth";
 import Cookies from "js-cookie";
 
 const authSlice = createSlice({
@@ -29,11 +29,24 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
     });
-    builder.addCase(logout.pending, (state, action) => {
+    // register
+    builder.addCase(register.pending, (state) => {
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(logout.fulfilled, (state, action) => {
+    builder.addCase(register.fulfilled, (state) => {
+      state.loading = false;
+    });
+    builder.addCase(register.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    // logout
+    builder.addCase(logout.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(logout.fulfilled, (state) => {
       state.loading = false;
       state.isLoggedIn = false;
       state.user = null;
