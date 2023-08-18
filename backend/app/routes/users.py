@@ -51,9 +51,9 @@ async def user_login(response: Response,login_data: UserLogin):
  
     token, user = await authenticate_user(email, password)
     if token:
-        response.set_cookie("access_token", token["access_token"], httponly=True,secure=None,samesite="strict")
-        response.set_cookie("user_info",str({"userId": str(user['_id']),"email": user['email'],"name":user['name']}), httponly=True,samesite="strict")
-        return token
+        # response.set_cookie("access_token", token["access_token"], httponly=True,secure=None,samesite="strict")
+        # response.set_cookie("user_info",str({"userId": str(user['_id']),"email": user['email'],"name":user['name']}), httponly=True,samesite="strict")
+        return {"token": token['access_token'],"user": {"userId": str(user['_id']),"email": user['email'],"name":user['name']}}
     else:
         raise HTTPException(status_code=401, detail="Login failed")
 
@@ -61,6 +61,6 @@ async def user_login(response: Response,login_data: UserLogin):
 
 @router.post('/auth/logout/', tags=['auth'])
 async def user_logout(response: Response):
-    response.delete_cookie("access_token")  # Clear the access token cookie
-    response.delete_cookie("user_info")  # Clear the access token cookie
+    # response.delete_cookie("access_token")  # Clear the access token cookie
+    # response.delete_cookie("user_info")  # Clear the access token cookie
     return {"message": "Logout successful"}
