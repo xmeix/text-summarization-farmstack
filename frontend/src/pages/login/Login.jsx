@@ -3,9 +3,11 @@ import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/apiCalls/auth";
 import { getJwtTokenFromCookie, token } from "../../store/apiCalls/apiService";
+import { NavLink } from "react-router-dom";
 
 const Login = () => {
   const dispatch = useDispatch();
+
   const { isLoading, error, user } = useSelector((state) => state.auth);
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -19,22 +21,43 @@ const Login = () => {
 
   return (
     <div className="login">
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input type="text" ref={emailRef} />
-        <input type="password" ref={passwordRef} />
-        <button type="submit">Login</button>
-      </form>
-      {isLoading && <div>Loading...</div>}
-      {error ? (
-        <div>ERROR! {error}</div>
-      ) : (
-        <div>
-          info {user?.userId} {user?.email} {user?.password}
-          {user?.name}
+      <div className="form-container">
+        <div className="login-header">
+          <div className="login-title">SUMMIFY</div>
+          <div className=" no-account">
+            you don't have an account!
+            <span>
+              <NavLink to={"/register"} className="link">
+                register
+              </NavLink>
+            </span>
+          </div>
         </div>
-      )}
-      {/* {getJwtTokenFromCookie() || "no token"} */}
+        <form onSubmit={handleLogin}>
+          <div className="input-group">
+            <label htmlFor="email">Email</label>
+            <input
+              name="email"
+              type="text"
+              ref={emailRef}
+              placeholder="ex: john.doe@gmail.com"
+            />
+          </div>
+          <div className="input-group">
+            <label htmlFor="password">Password</label>
+            <input
+              name="password"
+              type="password"
+              ref={passwordRef}
+              placeholder="ex: @password123"
+            />
+            <div className="forget-pass">Forgot your password?</div>
+          </div>
+          <button type="submit" className="form-btn">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
