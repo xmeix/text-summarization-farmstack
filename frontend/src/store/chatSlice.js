@@ -63,11 +63,11 @@ const chatSlice = createSlice({
     });
 
     // logout
-    builder.addCase(logout.pending, (state) => {
-      state.chats = []; // Reset chats to an empty array
-    });
     builder.addCase(logout.fulfilled, (state) => {
-      state.chats = []; // Reset chats to an empty array
+      state.chats = [];
+    });
+    builder.addCase(logout.rejected, (state) => {
+      state.error = action.payload;
     });
   },
 });

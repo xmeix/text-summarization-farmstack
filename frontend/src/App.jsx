@@ -8,12 +8,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "./store/apiCalls/auth";
 import { useEffect } from "react";
 import { getChats } from "./store/apiCalls/chat";
+import { getJwtTokenFromCookie } from "./store/apiCalls/apiService";
 
 function App() {
   const dispatch = useDispatch();
   const { isLoggedIn, isLoading, error, user } = useSelector(
     (state) => state.auth
   );
+
+  // ----------------------------------------------------------------------------
+  const handleRefresh = () => {
+    window.location.reload();
+  };
+
+  const handleStorageChange = async (event) => {
+    if (event.key === "isLoggedIn") {
+      handleRefresh();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
+
+  // ----------------------------------------------------------------------------
 
   const handleLogout = () => {
     dispatch(logout());

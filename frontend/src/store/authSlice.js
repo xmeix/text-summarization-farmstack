@@ -24,6 +24,7 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
       state.user = action.payload.user;
       Cookies.set("access_token", action.payload.token);
+      localStorage.setItem("isLoggedIn", true);
     });
     builder.addCase(login.rejected, (state, action) => {
       state.error = action.payload;
@@ -54,6 +55,7 @@ const authSlice = createSlice({
       state.isLoggedIn = false;
       state.user = null;
       Cookies.remove("access_token");
+      localStorage.setItem("isLoggedIn", false);
     });
     builder.addCase(logout.rejected, (state, action) => {
       state.error = action.payload;
