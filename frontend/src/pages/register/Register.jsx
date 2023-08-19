@@ -28,7 +28,7 @@ const Register = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     setErrorMessage("");
-    if (name === "" || email === "" || password === "")
+    if (name.trim() === "" || email.trim() === "" || password.trim() === "")
       setErrorMessage("Empty fields!");
     else {
       await dispatch(register({ name, email, password }));

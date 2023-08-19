@@ -4,7 +4,7 @@ from bson import ObjectId
 from app.controllers.auth.jwt_bearer import jwtBearer
 from app.controllers.auth.jwt_handler import decodeJWT
 from app.models.chats import Chat, TextSummary
-from app.controllers.chats.chats import get_summaried_text
+from app.controllers.chats.chats import get_summarized_text
 router = APIRouter()
 
 #get one chat by id
@@ -44,10 +44,13 @@ async def get_all_chats(response: Response,credentials: str = Depends(jwtBearer(
 
 #post a text and its summary in a specific chat
 @router.put('/chats/{id}', dependencies=[Depends(jwtBearer())], tags=['chats'])
-async def post_in_chat(response: Response,id: str,data: str = Body(...),credentials: str = Depends(jwtBearer())):
-    # we first verify the token
+async def post_in_chat(response: Response,id: str,text: str = Body(...),
+                       min_length: int = Body(...),max_length: int = Body(...),
+                       summary_diversity: bool = Body(...),
+                       credentials: str = Depends(jwtBearer())):
+    
     if jwtBearer().verify_jwt(jwtoken=credentials):
-        text_summary = await get_summaried_text(data)
+        text_summary = await get_summarized_text(text, min_length,max_length,summary_diversity)
         chat_object_id = ObjectId(id)
         # Update the chat in MongoDB by adding the new text summary
         result = await chats_collection.update_one(

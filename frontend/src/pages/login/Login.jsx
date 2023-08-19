@@ -29,7 +29,8 @@ const Login = () => {
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
     setErrorMessage("");
-    if (email === "" || password === "") setErrorMessage("Empty fields!");
+    if (email.trim() === "" || password.trim() === "")
+      setErrorMessage("Empty fields!");
     else {
       await dispatch(login({ email, password }));
       dispatch(getChats());
