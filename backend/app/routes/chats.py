@@ -54,11 +54,9 @@ async def post_in_chat(response: Response,id: str,data: str = Body(...),credenti
             {"_id": chat_object_id},
             {"$push": {"texts_summaries": text_summary.dict()}}
         )
-        if result.modified_count > 0:
+        if result:
             return {"message": "Text summary added successfully"}
-        else:
-            raise HTTPException(status_code=404, detail="Chat not found")
-
+        
     raise HTTPException(status_code=403, detail="Unauthorized")
 
 #add a new chat

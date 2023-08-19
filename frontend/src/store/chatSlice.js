@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addChat, deleteChat, getChats } from "./apiCalls/chat";
+import { addChat, addInChat, deleteChat, getChats } from "./apiCalls/chat";
 import { login, logout } from "./apiCalls/auth";
 
 const chatSlice = createSlice({
@@ -32,6 +32,18 @@ const chatSlice = createSlice({
       state.chats.push(action.payload);
     });
     builder.addCase(addChat.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
+    // add In chat
+    builder.addCase(addInChat.pending, (state, action) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(addInChat.fulfilled, (state, action) => {
+      state.isLoading = false;
+    });
+    builder.addCase(addInChat.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload;
     });

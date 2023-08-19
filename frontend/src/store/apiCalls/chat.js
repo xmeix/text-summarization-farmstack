@@ -46,6 +46,7 @@ export const addInChat = createAsyncThunk(
   async (data, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
+      console.log("data", data);
       const res = await apiService.user.put(`/chats/${data.id}/`, data.body);
 
       return res.data;

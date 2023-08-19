@@ -2,6 +2,8 @@
   background-color: rgb(32, 32, 32);
   font-size: 13px;
   font-weight: 400;
+  width: 220px;
+  padding: 1em;
   border-radius: 5px;
   white-space: nowrap;
   overflow: hidden;
