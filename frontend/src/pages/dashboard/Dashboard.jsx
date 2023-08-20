@@ -8,11 +8,9 @@ import Error from "../../components/Error/Error";
 import Toast from "../../components/toast/Toast";
 import Empty from "../../components/Empty/Empty";
 const Dashboard = () => {
-  const { isLoggedIn, isLoading, error, user } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoggedIn, error, user } = useSelector((state) => state.auth);
   const [chatTitle, setChatTitle] = useState("");
-  const { chats } = useSelector((state) => state.chat);
+  const { chats, isLoading } = useSelector((state) => state.chat);
   const [errorMessage, setErrorMessage] = useState("");
   console.log(chats);
   useEffect(() => {
@@ -60,7 +58,9 @@ const Dashboard = () => {
         </div>
       </div>
       <h1 className="ts-container">
-        {chats.length !== 0 ? (
+        {isLoading ? (
+          <Toast success={"wait a second..."} />
+        ) : chats.length !== 0 ? (
           chats?.map((chat, i) => <SmallChat key={i} chat={chat} />)
         ) : (
           <Empty field={"chats"} />

@@ -15,6 +15,7 @@
 .navbar .nav-p2 .user-name {
   font-size: 11px;
   cursor: default;
+  text-transform: lowercase;
 }
 .navbar .nav-p1,
 .navbar .nav-p2 {

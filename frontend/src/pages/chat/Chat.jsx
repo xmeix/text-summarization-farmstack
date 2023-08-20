@@ -15,26 +15,16 @@ const Chat = () => {
   const navigate = useNavigate();
   const chat = chats?.filter((c) => c._id === id)[0];
   const dispatch = useDispatch();
-  // const [errorMessage, setErrorMessage] = useState("");
-
-  // useEffect(() => {
-  //   if (error !== null) {
-  //     setErrorMessage(error);
-  //     const timer = setTimeout(() => {
-  //       setErrorMessage("");
-  //     }, 5000);
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [error]);
 
   const handleDeleteChat = async () => {
-    await dispatch(deleteChat(chat._id));
-    await dispatch(getChats());
     if (error === null && chat._id === id) {
       const next = chats?.filter((c) => c._id !== id)[0];
       if (next) navigate(`/dashboard/${next._id}`);
       else navigate("/dashboard/");
     }
+    await dispatch(deleteChat(chat._id)).then(async () => {
+      await dispatch(getChats());
+    });
   };
 
   return (
@@ -67,12 +57,10 @@ const Chat = () => {
             )}
             {isLoading && <Toast success={"loading..."} />}
           </div>
-
           <SummarizerForm id={id} />
-          {/* {error !== null && <Toast error={errorMessage} />} */}
         </>
       ) : (
-        <Notauth message={"you are not authorized to do that!"} />
+        <Notauth message={"you are not allowed to do that!"} />
       )}
     </div>
   );

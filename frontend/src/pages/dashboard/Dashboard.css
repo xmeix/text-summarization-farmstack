@@ -9,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 10% 1em 10%;
+  padding: 0 10% 0 10% !important;
   background-color: var(--black);
 }
 .dashboard .dash-head input {
@@ -30,9 +30,9 @@
 }
 .dashboard .dash-head .dashboard-title {
   padding: 0;
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
+  margin-left: 1em;
+  font-size: 14px;
+  font-weight: 700;
   text-transform: capitalize;
 }
 .dashboard .dash-head .icon-btn {
@@ -51,7 +51,7 @@
 }
 
 .ts-container {
-  margin: 6em 10% 0 10%;
+  margin: 5.5em 10% 1em 10%;
   border: solid 0.5px var(--v-gray);
   display: flex;
   justify-content: center;
