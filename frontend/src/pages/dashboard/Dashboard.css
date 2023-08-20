@@ -40,8 +40,11 @@
   background-color: var(--v-gray);
   color: var(--white);
   border-radius: 50px;
-  padding: 0.5em 0.7em;
+  padding: 0.5em;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .dashboard .dash-head .icon-btn:hover {
   background-color: rgba(44, 44, 44, 0.459);

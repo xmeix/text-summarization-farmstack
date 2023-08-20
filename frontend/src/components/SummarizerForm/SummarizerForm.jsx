@@ -15,14 +15,16 @@ const SummarizerForm = ({ id }) => {
   const [max_length, setMax_length] = useState(130);
 
   useEffect(() => {
-    if (errorMessage) {
-      // setErrorMessage(error);
+    if (errorMessage !== "" || error) {
+      if (error) {
+        setErrorMessage(error);
+      }
       const timer = setTimeout(() => {
         setErrorMessage("");
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [errorMessage]);
+  }, [errorMessage, error]);
 
   const countWords = (paragraph) => {
     const words = paragraph.trim().split(/\s+/);
@@ -37,11 +39,13 @@ const SummarizerForm = ({ id }) => {
       max_length === "" ||
       summary_diversity === ""
     ) {
-      setErrorMessage("Please fill in all fields."); // Set error message for empty fields
+      setErrorMessage("Please complete all fields.");
     } else if (countWords(text) <= min_length) {
-      setErrorMessage("The text is already concise."); // Set error message for min/max length validation
+      setErrorMessage("Text is already concise.");
+    } else if (countWords(text) <= max_length) {
+      setErrorMessage("Summarized text should have fewer max words.");
     } else if (parseInt(min_length) >= parseInt(max_length)) {
-      setErrorMessage("Minimum length should be less than maximum length."); // Set error message for min/max length validation
+      setErrorMessage("Min words should be less than max words.");
     } else {
       console.log("summarizing...");
       await dispatch(
@@ -93,9 +97,13 @@ const SummarizerForm = ({ id }) => {
         </div>
         <div className="inputbtn">
           <textarea type="text" onChange={(e) => setText(e.target.value)} />
-          <button type="submit" disabled={isLoading} className="btn">
-            <SendRoundedIcon />
-          </button>
+          {isLoading ? (
+            " ... "
+          ) : (
+            <button type="submit" disabled={isLoading} className="btn">
+              <SendRoundedIcon />
+            </button>
+          )}
         </div>
       </form>{" "}
       {errorMessage !== "" && <Toast error={errorMessage} />}

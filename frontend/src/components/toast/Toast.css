@@ -1,6 +1,6 @@
 .toast-error {
-  position: absolute;
-  top: 5em;
+  position: fixed;
+  top: 6em;
   right: 30%;
   left: 30%;
   padding: 0.5em;
@@ -8,5 +8,14 @@
 
   color: var(--white);
   background-color: #d13434;
+  border-radius: 5px;
+}
+
+.toast {
+  padding: 0.5em;
+  text-align: center;
+  font-size: 13px;
+
+  color: var(--white);
   border-radius: 5px;
 }

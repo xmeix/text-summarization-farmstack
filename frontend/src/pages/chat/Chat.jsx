@@ -8,23 +8,24 @@ import SummarizerForm from "../../components/SummarizerForm/SummarizerForm";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
 import Toast from "../../components/toast/Toast";
 import Notauth from "../../components/unauthorized/Notauth";
+import Empty from "../../components/Empty/Empty";
 const Chat = () => {
   const { id } = useParams();
-  const { chats, error } = useSelector((state) => state.chat);
+  const { chats, error, isLoading } = useSelector((state) => state.chat);
   const navigate = useNavigate();
   const chat = chats?.filter((c) => c._id === id)[0];
   const dispatch = useDispatch();
-  const [errorMessage, setErrorMessage] = useState("");
+  // const [errorMessage, setErrorMessage] = useState("");
 
-  useEffect(() => {
-    if (error !== null) {
-      setErrorMessage(error);
-      const timer = setTimeout(() => {
-        setErrorMessage("");
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error !== null) {
+  //     setErrorMessage(error);
+  //     const timer = setTimeout(() => {
+  //       setErrorMessage("");
+  //     }, 5000);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [error]);
 
   const handleDeleteChat = async () => {
     await dispatch(deleteChat(chat._id));
@@ -55,12 +56,20 @@ const Chat = () => {
             ))}
           </div>
           <div className="chat-ts-container">
-            {chat?.texts_summaries?.map((ts, i) => (
-              <TextSummary key={i} text={ts.text} summary={ts.summary} />
-            ))}
+            {chat &&
+            chat.texts_summaries &&
+            chat.texts_summaries.length !== 0 ? (
+              chat?.texts_summaries?.map((ts, i) => (
+                <TextSummary key={i} text={ts.text} summary={ts.summary} />
+              ))
+            ) : (
+              <Empty field={"sumarries"} />
+            )}
+            {isLoading && <Toast success={"loading..."} />}
           </div>
+
           <SummarizerForm id={id} />
-          {error !== null && <Toast error={errorMessage} />}
+          {/* {error !== null && <Toast error={errorMessage} />} */}
         </>
       ) : (
         <Notauth message={"you are not authorized to do that!"} />

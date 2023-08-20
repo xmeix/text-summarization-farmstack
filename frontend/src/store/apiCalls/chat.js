@@ -52,7 +52,7 @@ export const addInChat = createAsyncThunk(
 
       return res.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error.response.data.detail);
     }
   }
 );
