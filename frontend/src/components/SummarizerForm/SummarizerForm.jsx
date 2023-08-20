@@ -55,7 +55,7 @@ const SummarizerForm = ({ id }) => {
     <form className="summarizer-form" onSubmit={handleSummarization}>
       <div className="features">
         <div className="lab-inp">
-          <label>max words</label>
+          <label>min words</label>
           <input
             type="number"
             value={min_length}
@@ -64,7 +64,7 @@ const SummarizerForm = ({ id }) => {
         </div>
 
         <div className="lab-inp">
-          <label>min words</label>
+          <label>max words</label>
           <input
             type="number"
             value={max_length}

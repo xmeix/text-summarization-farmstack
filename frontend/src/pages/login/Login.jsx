@@ -3,7 +3,7 @@ import "./Login.css";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../store/apiCalls/auth";
 import { getJwtTokenFromCookie, token } from "../../store/apiCalls/apiService";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import Input from "./input/Input";
 import Error from "../../components/Error/Error";
 import { getChats } from "../../store/apiCalls/chat";
@@ -15,6 +15,8 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (error) {
       setErrorMessage(error);
@@ -34,6 +36,7 @@ const Login = () => {
     else {
       await dispatch(login({ email, password }));
       dispatch(getChats());
+      navigate("/dashboard/");
     }
   };
   const inputs = [

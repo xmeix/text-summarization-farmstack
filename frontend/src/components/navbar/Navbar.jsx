@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Navbar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../store/apiCalls/auth";
 
 const Navbar = () => {
@@ -8,10 +8,12 @@ const Navbar = () => {
   const { isLoggedIn, isLoading, error, user } = useSelector(
     (state) => state.auth
   );
+  const navigate = useNavigate();
 
   // ----------------------------------------------------------------------------
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/login");
   };
   // ----------------------------------------------------------------------------
 

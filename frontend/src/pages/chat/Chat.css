@@ -3,7 +3,12 @@
   justify-content: center;
   background-color: rgba(49, 48, 48, 0.651);
 }
-
+.current-chat {
+  font-size: 15px;
+  padding: 1em 3em;
+  background-color: var(--v-gray);
+  text-align: center;
+}
 .chat .chats-container {
   position: fixed;
   top: 3.8em;
