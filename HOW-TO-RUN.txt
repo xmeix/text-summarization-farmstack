@@ -1,0 +1,3 @@
+
+for the server: uvicorn main:app --workers 4
+for the client: yarn run dev
