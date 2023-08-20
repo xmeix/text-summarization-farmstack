@@ -4,20 +4,34 @@ import SmallChat from "../../components/SmallChat";
 import { useEffect, useState } from "react";
 import { addChat, getChats } from "../../store/apiCalls/chat";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import Error from "../../components/Error/Error";
+import Toast from "../../components/toast/Toast";
 const Dashboard = () => {
   const { isLoggedIn, isLoading, error, user } = useSelector(
     (state) => state.auth
   );
   const [chatTitle, setChatTitle] = useState("");
   const { chats } = useSelector((state) => state.chat);
-  const [ErrorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (errorMessage !== "") {
+      // setErrorMessage(error);
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMessage]);
+
   const dispatch = useDispatch();
+
   const handleAddChat = async () => {
     if (chatTitle.trim() !== "") {
       await dispatch(addChat({ title: chatTitle }));
       await dispatch(getChats());
     } else {
-      setErrorMessage("Please fill in all fields.");
+      setErrorMessage("Please fill the title field.");
     }
   };
   return (
@@ -33,7 +47,11 @@ const Dashboard = () => {
               justifyContent: "flex-end",
             }}
           >
-            <input type="text" onChange={(e) => setChatTitle(e.target.value)} />
+            <input
+              type="text"
+              onChange={(e) => setChatTitle(e.target.value)}
+              placeholder="write sum name"
+            />
             <button onClick={handleAddChat} className="icon-btn">
               <AddRoundedIcon />
             </button>
@@ -44,7 +62,8 @@ const Dashboard = () => {
         {chats?.map((chat, i) => (
           <SmallChat key={i} chat={chat} />
         ))}
-      </h1>
+      </h1>{" "}
+      {errorMessage !== "" && <Toast error={errorMessage} />}
     </div>
   );
 };

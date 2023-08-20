@@ -11,8 +11,9 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   // ----------------------------------------------------------------------------
-  const handleLogout = () => {
-    dispatch(logout());
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    await dispatch(logout());
     navigate("/login");
   };
   // ----------------------------------------------------------------------------
@@ -20,13 +21,13 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="nav-p1">
-        <div className="nav-logo">Summify</div>
+        <div className="nav-logo">Sum.</div>
         <NavLink to={"/dashboard"} className="link">
           dashboard
         </NavLink>
       </div>
       <div className="nav-p2">
-        <div className="user-name">#{user?.name}</div>
+        <div className="user-name">@{user?.name}</div>
 
         <button onClick={handleLogout} className="form-btn logout-btn">
           logout

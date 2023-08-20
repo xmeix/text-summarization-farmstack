@@ -12,6 +12,10 @@
   background-color: var(--black);
 }
 
+.navbar .nav-p2 .user-name {
+  font-size: 11px;
+  cursor: default;
+}
 .navbar .nav-p1,
 .navbar .nav-p2 {
   display: flex;
@@ -22,7 +26,7 @@
 }
 
 .navbar .nav-logo {
-  font-weight: 600;
+  font-weight: 900;
   font-size: 14px;
 }
 
@@ -35,6 +39,6 @@
 .logout-btn:hover {
 }
 
-.link:hover {
-  font-weight: 600;
+.link {
+  font-weight: 300;
 }

@@ -6,20 +6,33 @@ import { deleteChat, getChat, getChats } from "../../store/apiCalls/chat";
 import TextSummary from "../../components/TextSummary";
 import SummarizerForm from "../../components/SummarizerForm/SummarizerForm";
 import ClearRoundedIcon from "@mui/icons-material/ClearRounded";
+import Toast from "../../components/toast/Toast";
 const Chat = () => {
   const { id } = useParams();
-  const { chats } = useSelector((state) => state.chat);
+  const { chats, error } = useSelector((state) => state.chat);
   const navigate = useNavigate();
   const chat = chats?.filter((c) => c._id === id)[0];
   const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    if (error !== null) {
+      setErrorMessage(error);
+      const timer = setTimeout(() => {
+        setErrorMessage("");
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
+
   const handleDeleteChat = async () => {
-    if (chat._id === id) {
+    await dispatch(deleteChat(chat._id));
+    await dispatch(getChats());
+    if (error === null && chat._id === id) {
       const next = chats?.filter((c) => c._id !== id)[0];
       if (next) navigate(`/dashboard/${next._id}`);
       else navigate("/dashboard/");
     }
-    await dispatch(deleteChat(chat._id));
-    await dispatch(getChats());
   };
 
   return (
@@ -44,6 +57,7 @@ const Chat = () => {
         ))}
       </div>
       <SummarizerForm id={id} />
+      {error !== null && <Toast error={errorMessage} />}
     </div>
   );
 };

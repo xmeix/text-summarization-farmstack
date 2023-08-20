@@ -1,0 +1,12 @@
+.toast-error {
+  position: absolute;
+  top: 5em;
+  right: 30%;
+  left: 30%;
+  padding: 0.5em;
+  text-align: center;
+
+  color: var(--white);
+  background-color: #d13434;
+  border-radius: 5px;
+}

@@ -18,7 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (error) {
+    if (error !== null) {
       setErrorMessage(error);
       const timer = setTimeout(() => {
         setErrorMessage("");
@@ -35,8 +35,8 @@ const Login = () => {
       setErrorMessage("Empty fields!");
     else {
       await dispatch(login({ email, password }));
-      dispatch(getChats());
-      navigate("/dashboard/");
+      await dispatch(getChats());
+      navigate("/dashboard");
     }
   };
   const inputs = [
