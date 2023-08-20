@@ -1,28 +1,61 @@
 .dashboard {
-  padding: 0 5em;
 }
-.dashboard .dashboard-title {
-  position: sticky;
+.dashboard .dash-head {
+  position: fixed;
   top: 0;
+  left: 0;
   right: 0;
-  height: 20vh;
-
-  background-color: var(--black);
-  font-size: 20px;
-  font-weight: 600;
+  height: 170px;
   display: flex;
+  justify-content: space-between;
   align-items: flex-end;
+  padding: 0 10% 1em 10%;
+  background-color: var(--black);
+}
+.dashboard .dash-head input {
+  width: 50%;
+  padding: 0 1em;
+  text-align: center;
+  font-family: var(--font);
+  font-weight: 400;
+  height: 27px;
+  border-radius: 5px;
+  border: none;
+}
+.dashboard .dash-head-elements {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.dashboard .dash-head .dashboard-title {
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
   text-transform: capitalize;
-  transition: all 0.5s ease-in-out;
+}
+.dashboard .dash-head .icon-btn {
+  border: none;
+  background-color: var(--v-gray);
+  color: var(--white);
+  border-radius: 50px;
+  padding: 0.5em 0.7em;
+  cursor: pointer;
+}
+.dashboard .dash-head .icon-btn:hover {
+  background-color: rgba(44, 44, 44, 0.459);
 }
 
 .ts-container {
+  margin: 6em 10% 0 10%;
   border: solid 0.5px var(--v-gray);
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   flex-wrap: wrap;
   gap: 0.7em;
   padding: 1.5em;
   overflow-y: scroll;
-  max-height: 45vh;
+  height: 45vh;
 }

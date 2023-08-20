@@ -64,7 +64,7 @@ async def post_in_chat(response: Response,id: str,text: str = Body(...),
 
 #add a new chat
 @router.post('/chats/', dependencies=[Depends(jwtBearer())], tags=['chats'])
-async def create_chat(response: Response,title: str,credentials: str = Depends(jwtBearer())):
+async def create_chat(response: Response,title: str = Body(...),credentials: str = Depends(jwtBearer())):
     # we first verify the token
     if jwtBearer().verify_jwt(jwtoken=credentials):
         # we have to get the user id as a reference 

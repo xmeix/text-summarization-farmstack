@@ -1,15 +1,22 @@
 .text-summary {
   padding: 1em;
   max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
 }
 .text-summary .text,
 .text-summary .summary {
-  padding: 0.5em;
+  border-radius: 5px;
+  padding: 1em;
   border: solid 1px var(--v-gray);
+  font-size: 14px;
+  line-height: 22px;
 }
 
 .text-summary .text {
   background-color: var(--v-gray);
 }
 .text-summary .summary {
+  background-color: var(--black);
 }

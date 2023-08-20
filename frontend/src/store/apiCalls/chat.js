@@ -30,10 +30,11 @@ export const getChat = createAsyncThunk(
 );
 export const addChat = createAsyncThunk(
   "chat/addChat",
-  async (title, thunkAPI) => {
+  async (body, thunkAPI) => {
     const { rejectWithValue } = thunkAPI;
     try {
-      const res = await apiService.user.post(`/chats/${title}/`);
+      console.log(body);
+      const res = await apiService.user.post(`/chats/`, body.title);
 
       return res.data;
     } catch (error) {

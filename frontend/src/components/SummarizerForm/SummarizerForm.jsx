@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./SummarizerForm.css";
 import { addInChat, getChat, getChats } from "../../store/apiCalls/chat";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
 const SummarizerForm = ({ id }) => {
   const textRef = useRef(null);
   const { isLoading, error } = useSelector((state) => state.chat);
@@ -52,36 +53,40 @@ const SummarizerForm = ({ id }) => {
   };
   return (
     <form className="summarizer-form" onSubmit={handleSummarization}>
-      <label>
-        Summary minimum number of words:
-        <input
-          type="number"
-          value={min_length}
-          onChange={(e) => setMin_length(e.target.value)}
-        />
-      </label>
-      <label>
-        Summary maximum number of words:
-        <input
-          type="number"
-          value={max_length}
-          onChange={(e) => setMax_length(e.target.value)}
-        />
-      </label>
-      <label>
-        Summary Diversity:
-        <select
-          value={summary_diversity}
-          onChange={(e) => setSummary_diversity(e.target.value)}
-        >
-          <option value={false}>Concise</option>
-          <option value={true}>Creative</option>
-        </select>
-      </label>
+      <div className="features">
+        <div className="lab-inp">
+          <label>max words</label>
+          <input
+            type="number"
+            value={min_length}
+            onChange={(e) => setMin_length(e.target.value)}
+          />
+        </div>
+
+        <div className="lab-inp">
+          <label>min words</label>
+          <input
+            type="number"
+            value={max_length}
+            onChange={(e) => setMax_length(e.target.value)}
+          />
+        </div>
+
+        <div className="lab-inp">
+          <label>Diversity:</label>
+          <select
+            value={summary_diversity}
+            onChange={(e) => setSummary_diversity(e.target.value)}
+          >
+            <option value={false}>Concise</option>
+            <option value={true}>Creative</option>
+          </select>
+        </div>
+      </div>
       <div className="inputbtn">
         <textarea type="text" onChange={(e) => setText(e.target.value)} />
-        <button type="submit" disabled={isLoading}>
-          summarize
+        <button type="submit" disabled={isLoading} className="btn">
+          <SendRoundedIcon />
         </button>
       </div>
     </form>
