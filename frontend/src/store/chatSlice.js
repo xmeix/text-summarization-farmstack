@@ -66,7 +66,7 @@ const chatSlice = createSlice({
     builder.addCase(logout.fulfilled, (state) => {
       state.chats = [];
     });
-    builder.addCase(logout.rejected, (state) => {
+    builder.addCase(logout.rejected, (state, action) => {
       state.error = action.payload;
     });
   },
