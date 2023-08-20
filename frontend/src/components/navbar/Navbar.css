@@ -31,12 +31,24 @@
 }
 
 .logout-btn {
-  font-size: 13px;
-  padding: 0.5em 1em;
-  width: fit-content;
+  font-size: 12px !important;
+  padding: 0.5em 1em !important;
+  margin: 0 !important;
+  width: fit-content !important;
+
+  border: none;
+  border-radius: 5px;
+  background-color: rgb(41, 40, 40);
+  color: var(--white);
+
+  font-weight: 500;
+  text-transform: capitalize;
+
+  cursor: pointer;
 }
 
 .logout-btn:hover {
+  background-color: rgba(41, 40, 40, 0.836);
 }
 
 .link {

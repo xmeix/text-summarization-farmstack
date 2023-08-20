@@ -13,7 +13,7 @@ const SummarizerForm = ({ id }) => {
   const [summary_diversity, setSummary_diversity] = useState(false);
   const [min_length, setMin_length] = useState(30);
   const [max_length, setMax_length] = useState(130);
-
+  const [words, setWords] = useState(0);
   useEffect(() => {
     if (errorMessage !== "" || error) {
       if (error) {
@@ -96,7 +96,16 @@ const SummarizerForm = ({ id }) => {
           </div>
         </div>
         <div className="inputbtn">
-          <textarea type="text" onChange={(e) => setText(e.target.value)} />
+          <>
+            <textarea
+              type="text"
+              onChange={(e) => {
+                setText(e.target.value);
+                setWords(countWords(e.target.value));
+              }}
+            />
+            <div className="word-count">{words}</div>
+          </>
           {isLoading ? (
             " ... "
           ) : (

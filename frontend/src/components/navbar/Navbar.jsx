@@ -29,7 +29,7 @@ const Navbar = () => {
       <div className="nav-p2">
         <div className="user-name">@{user?.name}</div>
 
-        <button onClick={handleLogout} className="form-btn logout-btn">
+        <button onClick={handleLogout} className="logout-btn">
           logout
         </button>
       </div>

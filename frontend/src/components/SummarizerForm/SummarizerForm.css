@@ -27,6 +27,9 @@
   font-weight: 400;
   outline: none;
 }
+.word-count {
+  font-size: 12px;
+}
 .summarizer-form .features {
   display: flex;
 }
