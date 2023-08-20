@@ -7,6 +7,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Input from "./input/Input";
 import Error from "../../components/Error/Error";
 import { getChats } from "../../store/apiCalls/chat";
+import Toast from "../../components/toast/Toast";
+import { reset } from "../../store/authSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ const Login = () => {
       setErrorMessage(error);
       const timer = setTimeout(() => {
         setErrorMessage("");
+        dispatch(reset());
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -34,9 +37,12 @@ const Login = () => {
     if (email.trim() === "" || password.trim() === "")
       setErrorMessage("Empty fields!");
     else {
-      await dispatch(login({ email, password }));
-      await dispatch(getChats());
-      navigate("/dashboard");
+      await dispatch(login({ email, password })).then((err) => {
+        if (err.type === "auth/login/fulfilled") {
+          dispatch(getChats());
+          navigate("/dashboard");
+        }
+      });
     }
   };
   const inputs = [
@@ -86,7 +92,7 @@ const Login = () => {
           </button>
         </form>
       </div>
-      {errorMessage !== "" && <Error error={errorMessage} />}
+      {errorMessage !== "" && <Toast error={errorMessage} />}
     </div>
   );
 };

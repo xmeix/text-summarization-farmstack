@@ -10,7 +10,7 @@ export const publicRequest = axios.create({
 export const getJwtTokenFromCookie = () => {
   const cookie = Cookies.get("access_token");
 
-  console.log(cookie);
+  // console.log(cookie);
   return cookie ? cookie : undefined;
 };
 export const token = getJwtTokenFromCookie();

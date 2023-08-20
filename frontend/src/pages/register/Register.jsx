@@ -5,6 +5,8 @@ import { NavLink, useNavigate } from "react-router-dom";
 import Input from "../login/input/Input";
 import { register } from "../../store/apiCalls/auth";
 import Error from "../../components/Error/Error";
+import { reset } from "../../store/authSlice";
+import Toast from "../../components/toast/Toast";
 const Register = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -13,11 +15,14 @@ const Register = () => {
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
+
   useEffect(() => {
-    if (error) {
+    if (error !== null) {
       setErrorMessage(error);
+
       const timer = setTimeout(() => {
         setErrorMessage("");
+        dispatch(reset());
       }, 5000);
       return () => clearTimeout(timer);
     }
@@ -31,10 +36,12 @@ const Register = () => {
     if (name.trim() === "" || email.trim() === "" || password.trim() === "")
       setErrorMessage("Empty fields!");
     else {
-      await dispatch(register({ name, email, password }));
-      if (error === null) {
-        navigate("/login");
-      }
+      await dispatch(register({ name, email, password })).then((err) => {
+        console.log(err);
+        if (err.type === "auth/register/fulfilled") {
+          navigate("/login");
+        }
+      });
     }
   };
 
@@ -93,7 +100,7 @@ const Register = () => {
           </button>
         </form>
       </div>
-      {errorMessage !== "" && <Error error={errorMessage} />}
+      {errorMessage !== "" && <Toast error={errorMessage} />}
     </div>
   );
 };
