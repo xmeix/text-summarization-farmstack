@@ -16,14 +16,14 @@ const Chat = () => {
   const chat = chats?.filter((c) => c._id === id)[0];
   const dispatch = useDispatch();
 
-  const handleDeleteChat = async () => {
-    if (error === null && chat._id === id) {
+  const handleDeleteChat = async (chatId) => {
+    if (error === null && chatId === id) {
       const next = chats?.filter((c) => c._id !== id)[0];
       if (next) navigate(`/dashboard/${next._id}`);
       else navigate("/dashboard/");
     }
-    await dispatch(deleteChat(chat._id)).then(async () => {
-      await dispatch(getChats());
+    await dispatch(deleteChat(chatId)).then(async () => {
+      dispatch(getChats());
     });
   };
 
@@ -39,7 +39,7 @@ const Chat = () => {
                   <NavLink to={`/dashboard/${c._id}`}>{c.title}</NavLink>
                   <ClearRoundedIcon
                     className="chat-box-btn"
-                    onClick={handleDeleteChat}
+                    onClick={() => handleDeleteChat(c._id)}
                   />
                 </div>
               </div>

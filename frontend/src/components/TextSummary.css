@@ -17,6 +17,21 @@
 .text-summary .text {
   background-color: var(--v-gray);
 }
+
 .text-summary .summary {
   background-color: var(--black);
+}
+
+.text-summary .summary::before {
+  content: "Summary";
+  color: var(--white);
+  font-weight: bold;
+  margin-right: 0.5em;
+}
+
+.text-summary .text::before {
+  content: "Text";
+  color: var(--white);
+  font-weight: bold;
+  margin-right: 0.5em;
 }

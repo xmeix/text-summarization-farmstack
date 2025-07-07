@@ -3,5 +3,23 @@ MADE WITH FARM Stack :
 - FastAPI
 - MongoDB
 
-to run the server: uvicorn main:app --workers 4
+to run the server: 
+pip install uvicorn
+pip install fastapi
+pip install pydantic[email]
+pip install motor
+pip install python-decouple
+pip install passlib
+pip install PyJWT
+pip install transformers
+pip install torch
+pip install bcrypt==3.2.0 --force-reinstall
+pip install huggingface_hub[hf_xet]
+
+
+env setup
+
+in PROD: 
+uvicorn main:app --workers 1
+orn main:app --host 0.0.0.0 --port 8000 --workers 1
 to run the client: yarn run dev
